@@ -44,11 +44,11 @@ namespace Bank_Data_Web_Service.Data
             user.Password = "user3pass";
             users.Add(user);
 
-            //Account account = new Account();
-            //account.Id = 4;
-            //account.AccountNo = 21;
-            //account.Balance = 6567557;
-            //account.HolderId = 1;
+            Account account = new Account();
+            account.Id = 1;
+            account.AccountNo = 21;
+            account.Balance = 99999;
+            account.HolderId = 2;
 
             modelBuilder.Entity<User>().
                 HasMany(a => a.Accounts)
@@ -61,7 +61,7 @@ namespace Bank_Data_Web_Service.Data
                 .HasForeignKey(t => t.AccountId);
 
             modelBuilder.Entity<User>().HasData(users);
-            //modelBuilder.Entity<Account>().HasData(account);
+            modelBuilder.Entity<Account>().HasData(account);
 
         }
 

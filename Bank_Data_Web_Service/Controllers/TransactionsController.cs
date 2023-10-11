@@ -32,6 +32,17 @@ namespace Bank_Data_Web_Service.Controllers
             return await _context.Transaction.ToListAsync();
         }
 
+        // GET: api/Transactions/
+        [HttpGet("accNo/{no}")]
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByAccount(int no)
+        {
+            if (_context.Transaction == null)
+            {
+                return NotFound();
+            }
+            return await _context.Transaction.Where(t => t.AccountId == no).ToListAsync();
+        }
+
         // GET: api/Transactions/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Transaction>> GetTransaction(int id)
@@ -91,6 +102,30 @@ namespace Bank_Data_Web_Service.Controllers
               return Problem("Entity set 'DBManager.Transaction'  is null.");
           }
             _context.Transaction.Add(transaction);
+            var account = await _context.Account.FindAsync(transaction.AccountId);
+            if(account == null)
+            {
+                return NotFound(transaction.AccountId);
+            }
+
+            double balance = account.Balance;
+
+            if (transaction.Type == Transaction.TransactionType.Deposit)
+            {
+                account.Balance = balance + transaction.Amount;
+            }
+            else
+            {
+                if (balance > 0 && transaction.Amount < balance)
+                {
+                    account.Balance = balance - transaction.Amount;
+                }
+                else
+                {
+                    return Problem("Not enough balance");
+                }
+            }
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);

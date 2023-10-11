@@ -36,6 +36,15 @@ namespace Bank_Data_Web_Service.Migrations
                     b.HasIndex("HolderId");
 
                     b.ToTable("Account");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccountNo = 21,
+                            Balance = 99999.0,
+                            HolderId = 2
+                        });
                 });
 
             modelBuilder.Entity("Bank_Data_DLL.Transaction", b =>
@@ -47,7 +56,7 @@ namespace Bank_Data_Web_Service.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("Ammount")
+                    b.Property<double>("Amount")
                         .HasColumnType("REAL");
 
                     b.Property<int>("Type")

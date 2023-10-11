@@ -10,13 +10,13 @@ namespace Bank_Data_DLL
     {
         public int Id { get; set; }
         public TransactionType Type { get; set; }
-        public double Ammount { get; set; }
+        public double Amount { get; set; }
         public int AccountId { get; set; }
         public Account Account { get; set; }
 
         public enum TransactionType
         {
-            Deposite,
+            Deposit,
             Withdrawal
         }
     }

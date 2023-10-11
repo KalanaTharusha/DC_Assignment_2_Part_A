@@ -58,7 +58,7 @@ namespace Bank_Data_Web_Service.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
-                    Ammount = table.Column<double>(type: "REAL", nullable: false),
+                    Amount = table.Column<double>(type: "REAL", nullable: false),
                     AccountId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -81,6 +81,11 @@ namespace Bank_Data_Web_Service.Migrations
                     { 2, "user2 address", "user2@email.com", "user2", "user2pass", 710000002, "user2 picture url" },
                     { 3, "user3 address", "user3@email.com", "user3", "user3pass", 710000003, "user3 picture url" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Account",
+                columns: new[] { "Id", "AccountNo", "Balance", "HolderId" },
+                values: new object[] { 1, 21, 99999.0, 2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Account_HolderId",

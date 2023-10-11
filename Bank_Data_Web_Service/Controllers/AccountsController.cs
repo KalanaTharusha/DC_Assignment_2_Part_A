@@ -50,6 +50,42 @@ namespace Bank_Data_Web_Service.Controllers
             return account;
         }
 
+        // GET: api/Accounts/no/45
+        [HttpGet("no/{accNo}")]
+        public async Task<ActionResult<Account>> GetAccountByNo(int accNo)
+        {
+            if (_context.Account == null)
+            {
+                return NotFound();
+            }
+            var account = await _context.Account.FirstOrDefaultAsync(a => a.AccountNo == accNo);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            return account;
+        }
+
+        // GET: api/Accounts/holder/1
+        [HttpGet("holder/{holderId}")]
+        public async Task<ActionResult<Account>> GetAccountByHolder(int holderId)
+        {
+            if (_context.Account == null)
+            {
+                return NotFound();
+            }
+            var account = await _context.Account.FirstOrDefaultAsync(a => a.HolderId == holderId);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            return account;
+        }
+
         // PUT: api/Accounts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

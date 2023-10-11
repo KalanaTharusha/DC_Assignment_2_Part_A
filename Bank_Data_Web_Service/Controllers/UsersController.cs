@@ -50,6 +50,24 @@ namespace Bank_Data_Web_Service.Controllers
             return user;
         }
 
+        // GET: api/Users/email/user@email.com
+        [HttpGet("email/{e}")]
+        public async Task<ActionResult<User>> GetUserByEmail(string e)
+        {
+            if (_context.User == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Email.Equals(e));
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
+        }
+
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
