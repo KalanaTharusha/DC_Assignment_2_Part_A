@@ -66,7 +66,7 @@ namespace Bank_Data_Web_Service.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTransaction(int id, Transaction transaction)
         {
-            if (id != transaction.Id)
+            if (id != transaction.TransactionId)
             {
                 return BadRequest();
             }
@@ -128,7 +128,7 @@ namespace Bank_Data_Web_Service.Controllers
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
+            return CreatedAtAction("GetTransaction", new { id = transaction.TransactionId }, transaction);
         }
 
         // DELETE: api/Transactions/5
@@ -153,7 +153,7 @@ namespace Bank_Data_Web_Service.Controllers
 
         private bool TransactionExists(int id)
         {
-            return (_context.Transaction?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Transaction?.Any(e => e.TransactionId == id)).GetValueOrDefault();
         }
     }
 }

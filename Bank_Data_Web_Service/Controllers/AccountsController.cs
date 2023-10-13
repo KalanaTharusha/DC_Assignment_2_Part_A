@@ -76,7 +76,7 @@ namespace Bank_Data_Web_Service.Controllers
             {
                 return NotFound();
             }
-            var account = await _context.Account.FirstOrDefaultAsync(a => a.HolderId == holderId);
+            var account = await _context.Account.FirstOrDefaultAsync(a => a.UserId == holderId);
 
             if (account == null)
             {
@@ -91,7 +91,7 @@ namespace Bank_Data_Web_Service.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAccount(int id, Account account)
         {
-            if (id != account.Id)
+            if (id != account.AccountId)
             {
                 return BadRequest();
             }
@@ -129,7 +129,7 @@ namespace Bank_Data_Web_Service.Controllers
             _context.Account.Add(account);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAccount", new { id = account.Id }, account);
+            return CreatedAtAction("GetAccount", new { id = account.AccountId }, account);
         }
 
         // DELETE: api/Accounts/5
@@ -154,7 +154,7 @@ namespace Bank_Data_Web_Service.Controllers
 
         private bool AccountExists(int id)
         {
-            return (_context.Account?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Account?.Any(e => e.AccountId == id)).GetValueOrDefault();
         }
     }
 }

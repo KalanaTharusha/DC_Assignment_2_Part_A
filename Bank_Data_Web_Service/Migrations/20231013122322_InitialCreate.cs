@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -16,7 +17,7 @@ namespace Bank_Data_Web_Service.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Email = table.Column<string>(type: "TEXT", nullable: true),
@@ -27,27 +28,27 @@ namespace Bank_Data_Web_Service.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Account",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    AccountId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     AccountNo = table.Column<int>(type: "INTEGER", nullable: false),
                     Balance = table.Column<double>(type: "REAL", nullable: false),
-                    HolderId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Account", x => x.Id);
+                    table.PrimaryKey("PK_Account", x => x.AccountId);
                     table.ForeignKey(
-                        name: "FK_Account_User_HolderId",
-                        column: x => x.HolderId,
+                        name: "FK_Account_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "Id",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -55,26 +56,27 @@ namespace Bank_Data_Web_Service.Migrations
                 name: "Transaction",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    TransactionId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
                     Amount = table.Column<double>(type: "REAL", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     AccountId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transaction", x => x.Id);
+                    table.PrimaryKey("PK_Transaction", x => x.TransactionId);
                     table.ForeignKey(
                         name: "FK_Transaction_Account_AccountId",
                         column: x => x.AccountId,
                         principalTable: "Account",
-                        principalColumn: "Id",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Id", "Address", "Email", "Name", "Password", "Phone", "Picture" },
+                columns: new[] { "UserId", "Address", "Email", "Name", "Password", "Phone", "Picture" },
                 values: new object[,]
                 {
                     { 1, "user1 address", "user1@email.com", "user1", "user1pass", 710000001, "user1 picture url" },
@@ -84,13 +86,13 @@ namespace Bank_Data_Web_Service.Migrations
 
             migrationBuilder.InsertData(
                 table: "Account",
-                columns: new[] { "Id", "AccountNo", "Balance", "HolderId" },
+                columns: new[] { "AccountId", "AccountNo", "Balance", "UserId" },
                 values: new object[] { 1, 21, 99999.0, 2 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Account_HolderId",
+                name: "IX_Account_UserId",
                 table: "Account",
-                column: "HolderId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transaction_AccountId",

@@ -15,7 +15,7 @@ namespace Bank_Data_Web_Service.Data
             List<User> users = new List<User>();
 
             User user = new User();
-            user.Id = 1;
+            user.UserId = 1;
             user.Name = "user1";
             user.Email = "user1@email.com";
             user.Address = "user1 address";
@@ -25,7 +25,7 @@ namespace Bank_Data_Web_Service.Data
             users.Add(user);
 
             user = new User();
-            user.Id = 2;
+            user.UserId = 2;
             user.Name = "user2";
             user.Email = "user2@email.com";
             user.Address = "user2 address";
@@ -35,7 +35,7 @@ namespace Bank_Data_Web_Service.Data
             users.Add(user);
 
             user = new User();
-            user.Id = 3;
+            user.UserId = 3;
             user.Name = "user3";
             user.Email = "user3@email.com";
             user.Address = "user3 address";
@@ -45,20 +45,10 @@ namespace Bank_Data_Web_Service.Data
             users.Add(user);
 
             Account account = new Account();
-            account.Id = 1;
+            account.AccountId = 1;
             account.AccountNo = 21;
             account.Balance = 99999;
-            account.HolderId = 2;
-
-            modelBuilder.Entity<User>().
-                HasMany(a => a.Accounts)
-                .WithOne(u => u.Holder)
-                .HasForeignKey(a => a.HolderId);
-
-            modelBuilder.Entity<Account>().
-                HasMany(t => t.Transactions)
-                .WithOne(a => a.Account)
-                .HasForeignKey(t => t.AccountId);
+            account.UserId = 2;
 
             modelBuilder.Entity<User>().HasData(users);
             modelBuilder.Entity<Account>().HasData(account);
