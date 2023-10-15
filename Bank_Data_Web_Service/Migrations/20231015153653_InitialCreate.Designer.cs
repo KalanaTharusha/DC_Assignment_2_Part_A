@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bank_Data_Web_Service.Migrations
 {
     [DbContext(typeof(DBManager))]
-    [Migration("20231013122322_InitialCreate")]
+    [Migration("20231015153653_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -32,6 +32,9 @@ namespace Bank_Data_Web_Service.Migrations
                     b.Property<double>("Balance")
                         .HasColumnType("REAL");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
@@ -45,10 +48,47 @@ namespace Bank_Data_Web_Service.Migrations
                         new
                         {
                             AccountId = 1,
-                            AccountNo = 21,
+                            AccountNo = 6786887,
                             Balance = 99999.0,
+                            Status = 0,
                             UserId = 2
+                        },
+                        new
+                        {
+                            AccountId = 2,
+                            AccountNo = 2454567,
+                            Balance = 4354.0,
+                            Status = 0,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            AccountId = 3,
+                            AccountNo = 567577,
+                            Balance = 13214.0,
+                            Status = 0,
+                            UserId = 3
                         });
+                });
+
+            modelBuilder.Entity("Bank_Data_DLL.Log", b =>
+                {
+                    b.Property<int>("LogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Action")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LogMessage")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("LogId");
+
+                    b.ToTable("Log");
                 });
 
             modelBuilder.Entity("Bank_Data_DLL.Transaction", b =>
@@ -64,6 +104,9 @@ namespace Bank_Data_Web_Service.Migrations
                         .HasColumnType("REAL");
 
                     b.Property<DateTime>("DateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Type")
@@ -100,6 +143,9 @@ namespace Bank_Data_Web_Service.Migrations
                     b.Property<string>("Picture")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("UserId");
 
                     b.ToTable("User");
@@ -108,32 +154,35 @@ namespace Bank_Data_Web_Service.Migrations
                         new
                         {
                             UserId = 1,
-                            Address = "user1 address",
-                            Email = "user1@email.com",
-                            Name = "user1",
-                            Password = "user1pass",
+                            Address = "admin address",
+                            Email = "admin@email.com",
+                            Name = "admin",
+                            Password = "adminpass",
                             Phone = 710000001,
-                            Picture = "user1 picture url"
+                            Picture = "admin picture url",
+                            Role = 1
                         },
                         new
                         {
                             UserId = 2,
+                            Address = "user1 address",
+                            Email = "user1@email.com",
+                            Name = "user1",
+                            Password = "user1pass",
+                            Phone = 710000002,
+                            Picture = "user1 picture url",
+                            Role = 0
+                        },
+                        new
+                        {
+                            UserId = 3,
                             Address = "user2 address",
                             Email = "user2@email.com",
                             Name = "user2",
                             Password = "user2pass",
                             Phone = 710000002,
-                            Picture = "user2 picture url"
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            Address = "user3 address",
-                            Email = "user3@email.com",
-                            Name = "user3",
-                            Password = "user3pass",
-                            Phone = 710000003,
-                            Picture = "user3 picture url"
+                            Picture = "user2 picture url",
+                            Role = 0
                         });
                 });
 

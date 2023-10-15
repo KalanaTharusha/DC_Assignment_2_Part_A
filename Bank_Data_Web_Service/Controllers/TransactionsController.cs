@@ -32,15 +32,23 @@ namespace Bank_Data_Web_Service.Controllers
             return await _context.Transaction.ToListAsync();
         }
 
-        // GET: api/Transactions/
-        [HttpGet("accNo/{no}")]
+        // GET: api/Transactions/ get by acc No
+        [HttpGet("no/{no}")]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByAccount(int no)
         {
             if (_context.Transaction == null)
             {
                 return NotFound();
             }
-            return await _context.Transaction.Where(t => t.AccountId == no).ToListAsync();
+
+            Account account = await _context.Account.Where(a => a.AccountNo == no).FirstOrDefaultAsync();
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            return await _context.Transaction.Where(t => t.AccountId == account.AccountId).ToListAsync();
         }
 
         // GET: api/Transactions/5
@@ -97,13 +105,13 @@ namespace Bank_Data_Web_Service.Controllers
         [HttpPost]
         public async Task<ActionResult<Transaction>> PostTransaction(Transaction transaction)
         {
-          if (_context.Transaction == null)
-          {
-              return Problem("Entity set 'DBManager.Transaction'  is null.");
-          }
+            if (_context.Transaction == null)
+            {
+                return Problem("Entity set 'DBManager.Transaction'  is null.");
+            }
             _context.Transaction.Add(transaction);
             var account = await _context.Account.FindAsync(transaction.AccountId);
-            if(account == null)
+            if (account == null)
             {
                 return NotFound(transaction.AccountId);
             }
@@ -119,6 +127,7 @@ namespace Bank_Data_Web_Service.Controllers
                 if (balance > 0 && transaction.Amount < balance)
                 {
                     account.Balance = balance - transaction.Amount;
+                    transaction.Amount = 0 - transaction.Amount;
                 }
                 else
                 {

@@ -29,7 +29,9 @@ namespace Bank_Data_Web_Service.Controllers
           {
               return NotFound();
           }
-            return await _context.User.ToListAsync();
+            return await _context.User
+                .Include(u => u.Accounts)
+                .ToListAsync();
         }
 
         // GET: api/Users/5
@@ -40,7 +42,9 @@ namespace Bank_Data_Web_Service.Controllers
           {
               return NotFound();
           }
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.User
+                .Include(u => u.Accounts)
+                .FirstOrDefaultAsync(u => u.UserId == id);
 
             if (user == null)
             {
@@ -58,7 +62,9 @@ namespace Bank_Data_Web_Service.Controllers
             {
                 return NotFound();
             }
-            var user = await _context.User.FirstOrDefaultAsync(u => u.Email.Equals(e));
+            var user = await _context.User
+                .Include (u => u.Accounts)
+                .FirstOrDefaultAsync(u => u.Email.Equals(e));
 
             if (user == null)
             {
